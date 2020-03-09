@@ -1,10 +1,12 @@
-/* eslint-disable no-console */
-
 const express = require(`express`);
 const morgan = require(`morgan`);
 const helmet = require(`helmet`);
 const middleware = require(`./middleware`);
 const setup = require(`./setup`);
+// colorful console
+require(`console-info`);
+require(`console-warn`);
+require(`console-error`);
 
 const app = express();
 setup.envSetup();
@@ -31,7 +33,7 @@ app.use(middleware.errorHandler);
 
 const port = process.env.PORT || 2999;
 app.listen(port, () => {
-  console.log(`******************************`);
-  console.log(`Listening on port ${port}`);
-  console.log(`******************************`);
+  console.info(`******************************`);
+  console.info(`Listening on port ${port}`);
+  console.info(`******************************`);
 });

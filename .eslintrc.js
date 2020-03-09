@@ -40,7 +40,10 @@ module.exports = {
                 "props": false
             }
         ],
-        "no-console": "off",
+        "no-console": ["warn", {
+            "allow": ["warn", "error", "info"]
+        }
+        ],
         "quotes": [
             "error",
             "backtick",

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const dotEnv = require(`dotenv`);
 const dotenvExpand = require(`dotenv-expand`);
 const mongoose = require(`mongoose`);
@@ -26,14 +25,14 @@ const mongoDbSetup = (consoleError = false, throwError = false) => {
       connectTimeoutMS: 1000,
     })
     .then(() => {
-      console.log(`******************************`);
-      console.log(`Database Connected!`);
-      console.log(`******************************`);
+      console.info(`******************************`);
+      console.info(`Database Connected!`);
+      console.info(`******************************`);
     })
     .catch(err => {
-      console.log(`******************************`);
-      console.log(`Database Connection Error!\n`, consoleError ? err : ``);
-      console.log(`******************************`);
+      console.error(`******************************`);
+      console.error(`Database Connection Error!\n`, consoleError ? err : ``);
+      console.error(`******************************`);
       if (throwError) throw err;
     });
 };
