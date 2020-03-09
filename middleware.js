@@ -1,5 +1,5 @@
-const rateLimit = require('express-rate-limit');
-const mung = require('express-mung');
+const rateLimit = require(`express-rate-limit`);
+const mung = require(`express-mung`);
 
 // Not found
 const notFound = (req, res, next) => {
@@ -15,7 +15,7 @@ const errorHandler = (error, _req, res, next) => {
   res.json({
     success: false,
     message: error.message,
-    error: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+    error: process.env.NODE_ENV === `production` ? `🥞` : error.stack,
   });
   next();
 };
@@ -25,9 +25,7 @@ const modifyResponseBody = (body, req, _res) => {
   // Modify response here
   // Attach the request to response, if requested
   if (body && req.body.returnRequest) {
-    // ## eslint-disable-next-line no-param-reassign
-    // body.request = { body: req.body, headers: req.headers };
-    return { ...body, request: { body: req.body, headers: req.headers } };
+    body.request = { body: req.body, headers: req.headers };
   }
   return body;
 };
@@ -35,15 +33,16 @@ const modifyResponseBody = (body, req, _res) => {
 // TODO: Switch to a redis store in production!
 // maxReq in windowMinutes will block the user!
 const rateLimiter = (windowMinutes, maxReq, resHeaders) => {
-  const windowMs = Number(windowMinutes || process.env.LIMIT_WINDOW || '15') * 60 * 1000;
-  const max = Number(maxReq || process.env.LIMIT_REQ || '100');
+  const windowMs =
+    Number(windowMinutes || process.env.LIMIT_WINDOW || `15`) * 60 * 1000;
+  const max = Number(maxReq || process.env.LIMIT_REQ || `100`);
   return rateLimit({
     windowMs,
     max,
     headers: resHeaders || false,
     statusCode: 400,
     handler(_req, res, next) {
-      const error = new Error('Too many requests!');
+      const error = new Error(`Too many requests!`);
       res.status(418);
       next(error);
     },

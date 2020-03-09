@@ -10,8 +10,8 @@
     "debug:all": "nodemon --inspect=0.0.0.0:9229 index.js",
     "debug-brk": "nodemon --inspect-brk=127.0.0.1:9229 index.js",
     "debug-brk:all": "nodemon --inspect-brk=0.0.0.0:9229 index.js",
-    "lint": "eslint  --cache --ignore-pattern .gitignore",
-    "lint:fix": "eslint  --cache --ignore-pattern .gitignore --fix",
+    "lint": "eslint . --cache --ignore-pattern .gitignore",
+    "lint:fix": "eslint . --cache --ignore-pattern .gitignore --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

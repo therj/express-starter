@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
-const dotEnv = require('dotenv');
-const dotenvExpand = require('dotenv-expand');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const dotEnv = require(`dotenv`);
+const dotenvExpand = require(`dotenv-expand`);
+const mongoose = require(`mongoose`);
+const cors = require(`cors`);
 
 const envSetup = () => {
   // Load environment variables
   const envConfig = dotEnv.config({
-    // allowEmptyValues: true,
-    path: '.env',
+    path: `.env`,
     debug: process.env.DEBUG,
   });
   dotenvExpand(envConfig);
@@ -18,22 +17,23 @@ const envSetup = () => {
   }
 };
 const mongoDbSetup = (consoleError = false, throwError = false) => {
-  mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    connectTimeoutMS: 1000,
-  })
-    .then(() => {
-      console.log('******************************');
-      console.log('Database Connected!');
-      console.log('******************************');
+  mongoose
+    .connect(process.env.MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      connectTimeoutMS: 1000,
     })
-    .catch((err) => {
-      console.log('******************************');
-      console.log('Database Connection Error!\n', consoleError ? err : '');
-      console.log('******************************');
+    .then(() => {
+      console.log(`******************************`);
+      console.log(`Database Connected!`);
+      console.log(`******************************`);
+    })
+    .catch(err => {
+      console.log(`******************************`);
+      console.log(`Database Connection Error!\n`, consoleError ? err : ``);
+      console.log(`******************************`);
       if (throwError) throw err;
     });
 };
@@ -42,30 +42,33 @@ const corsSetup = (whitelistDomains, includeFromEnv = true) => {
    * @param whitelistDomains is a list of domains to allow cors requests from
    * Can be an array of domains
    * Or a string with domains separated by a comma
-  * @param includeFromEnv will look for CORS_WHITELIST in environment. Defaults to true
+   * @param includeFromEnv will look for CORS_WHITELIST in environment. Defaults to true
    */
   let whitelist = [];
   if (Array.isArray(whitelistDomains)) {
     whitelist = [...whitelist, ...whitelistDomains];
-  } else if (typeof (whitelistDomains) === 'string' && whitelistDomains.length) {
-    const whitelistFromParam = whitelistDomains.split(',').map((x) => x.trim());
+  } else if (typeof whitelistDomains === `string` && whitelistDomains.length) {
+    const whitelistFromParam = whitelistDomains.split(`,`).map(x => x.trim());
     whitelist = [...whitelist, ...whitelistFromParam];
   }
   if (includeFromEnv) {
-    const whitelistFromEnv = includeFromEnv && process.env.CORS_WHITELIST
-      && process.env.CORS_WHITELIST
-        .split(',').map((x) => x.trim());
+    const whitelistFromEnv =
+      includeFromEnv &&
+      process.env.CORS_WHITELIST &&
+      process.env.CORS_WHITELIST.split(`,`).map(x => x.trim());
 
     whitelist = [...whitelist, ...whitelistFromEnv];
     // required if you want to hit api through browser, origin is undefined!
-    if (process.env.CORS_SELF) { whitelist.push(undefined); }
+    if (process.env.CORS_SELF) {
+      whitelist.push(undefined);
+    }
   }
   const corsOptions = {
     origin: (origin, callback) => {
       if (whitelist && whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
-        callback(new Error('Blocked by CORS'));
+        callback(new Error(`Blocked by CORS`));
       }
     },
   };
